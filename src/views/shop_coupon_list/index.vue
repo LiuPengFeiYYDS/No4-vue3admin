@@ -1,12 +1,11 @@
 <template>
-  <div class="level">会员管理</div>
+  <div class="coupon">优惠券管理</div>
 </template>
 
 <script setup>
 // import { ref, reactive, toRefs } from 'vue';
 // import { useStore } from 'vuex';
 //  import { useRouter, useRoute } from 'vue-router';
-
 // const store = useStore();
 // const router = useRouter();
 // const route = useRoute();

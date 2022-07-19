@@ -19,24 +19,9 @@ const routes = [
         component: () => import('../views/index')
       },
       {
-        path: '/goods/list',
-        name: 'goods',
-        component: () => import('../views/commodity_list/goods.vue')
-      },
-      {
-        path: '/coupon/list',
-        name: 'coupon',
-        component: () => import('../views/commodity_list/coupon.vue')
-      },
-      {
-        path: '/category/list',
-        name: 'category',
-        component: () => import('../views/commodity_list/category.vue')
-      },
-      {
-        path: '/skus/list',
-        name: 'skus',
-        component: () => import('../views/commodity_list/skus.vue')
+        path: '/user/list',
+        name: 'user',
+        component: () => import('../views/user_user-list_list')
       }
     ]
   },

@@ -2,5 +2,6 @@ export default {
   token: (state) => state.user.token,
   userInfo: (state) => state.user.userInfo || '',
   isCollapse: (state) => state.user.isCollapse,
-  menuList: (state) => state.permission.menuList
+  menuList: (state) => state.permission.menuList,
+  tagsList: (state) => state.tags.tagsList
 }

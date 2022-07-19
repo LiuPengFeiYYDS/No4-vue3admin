@@ -1,7 +1,5 @@
 <template>
-  <div class="mains">
-    <router-view />
-  </div>
+  <div class="category">分类管理</div>
 </template>
 
 <script setup>
@@ -14,10 +12,4 @@
 // const data = reactive({});
 </script>
 
-<style lang="scss" scoped>
-.mains{
-  height: 100%;
-  padding: 15px;
-  margin: 60px 5px;
-}
-</style>
+<style lang="scss" scoped></style>

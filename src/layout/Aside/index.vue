@@ -1,6 +1,6 @@
 <template>
   <el-menu
-    default-active="2"
+    :default-active="$route.path"
     :collapse="$store.getters.isCollapse"
     :style="{ width: !$store.getters.isCollapse ? '250px' : '64px' }"
     :collapse-transition="false"

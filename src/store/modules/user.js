@@ -1,5 +1,5 @@
 import { login, getUserInfo } from '../../api/user'
-import { setItem, getItem } from '@/utils/storage'
+import { setItem, getItem } from '../../utils/storage'
 export default {
   namespaced: true,
   state: {

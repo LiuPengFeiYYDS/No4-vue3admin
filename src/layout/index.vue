@@ -9,6 +9,7 @@
           <Aside></Aside>
         </el-aside>
         <el-main>
+          <tags-view></tags-view>
           <Main></Main>
         </el-main>
       </el-container>
@@ -20,6 +21,7 @@
 import Main from './Main/index.vue'
 import Header from './Header/index.vue'
 import Aside from './Aside/index.vue'
+import TagsView from '../components/tagsViews.vue'
 // import { ref, reactive, toRefs } from 'vue';
 // import { useStore } from 'vuex';
 //  import { useRouter, useRoute } from 'vue-router';
@@ -60,7 +62,9 @@ import Aside from './Aside/index.vue'
     overflow: auto;
   }
   .el-main {
-    background: #e5e7eb;
+    padding: 0 10px;
+    background: #f3f4f6;
   }
 }
+
 </style>

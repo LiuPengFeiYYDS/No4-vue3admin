@@ -18,6 +18,7 @@ export default {
       const menu = filtersMenus(menus)
       commit('SET_MENU_LIST', menu)
       const route = filterRoutes(menu)
+      console.log(route)
       return route
     }
   }
