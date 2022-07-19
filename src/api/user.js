@@ -4,14 +4,18 @@
  */
 import request from '../utils/request'
 
-const login = (data) => {
+function login(data) {
   return request({
-    url: 'login',
-    method: 'POST',
+    url: '/admin/login',
+    method: 'post',
     data
   })
 }
-
-export default {
-  login
+function getUserInfo() {
+  return request({ url: '/admin/getinfo', method: 'post' })
 }
+// 退出登录
+function logOut() {
+  return request({ url: '/admin/logout', method: 'post' })
+}
+export { login, getUserInfo, logOut }

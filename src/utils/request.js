@@ -8,11 +8,8 @@ const http = axios.create({
 // 请求拦截
 http.interceptors.request.use(
   (config) => {
-    const token = store.getters.userInfo.token
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
-
+    const token = store.getters.token
+    if (token) config.headers.token = token
     return config
   },
   (err) => {
@@ -22,9 +19,7 @@ http.interceptors.request.use(
 // 响应拦截
 http.interceptors.response.use(
   (res) => {
-    if (res.data.code === 200) {
-      return res.data.data
-    }
+    return res.data.data
   },
   (err) => {
     return Promise.reject(err)

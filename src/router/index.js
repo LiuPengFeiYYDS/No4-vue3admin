@@ -1,19 +1,53 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import layout from '../layout'
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/login')
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    path: '/layout',
+    name: 'layout',
+    component: layout,
+    redirect: '/',
+    children: [
+      {
+        path: '/',
+        name: 'index',
+        component: () => import('../views/index')
+      },
+      {
+        path: '/goods/list',
+        name: 'goods',
+        component: () => import('../views/commodity_list/goods.vue')
+      },
+      {
+        path: '/coupon/list',
+        name: 'coupon',
+        component: () => import('../views/commodity_list/coupon.vue')
+      },
+      {
+        path: '/category/list',
+        name: 'category',
+        component: () => import('../views/commodity_list/category.vue')
+      },
+      {
+        path: '/skus/list',
+        name: 'skus',
+        component: () => import('../views/commodity_list/skus.vue')
+      }
+    ]
+  },
+  {
+    path: '/404',
+    name: '404',
+    component: () => import('../views/404')
+  },
+  {
+    path: '/:catchAll(.*)',
+    redirect: '/404'
   }
 ]
 
