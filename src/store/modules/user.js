@@ -22,13 +22,13 @@ export default {
   actions: {
     async handleLogin({ commit }, params) {
       const res = await login(params)
-      console.log(res)
+      // console.log(res)
       commit('SET_TOKEN', res.token)
       return res
     },
     async getUserInfo({ commit }) {
       const res = await getUserInfo()
-      console.log('1111', res)
+      // console.log('1111', res)
       commit('SET_USER_INFO', res)
       return res
     }

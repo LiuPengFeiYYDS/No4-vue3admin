@@ -12,13 +12,13 @@ router.beforeEach(async (to, from, next) => {
         next()
       } else {
         const userInfo = await store.dispatch('user/getUserInfo')
-        console.log('用户所有信息=>', userInfo)
+        // console.log('用户所有信息=>', userInfo)
         if (userInfo) {
           const routes = await store.dispatch(
             'permission/filterRoutes',
             userInfo.menus
           )
-          console.log(routes)
+          // console.log(routes)
           if (routes) {
             routes.forEach((item) => {
               router.addRoute('layout', item)
