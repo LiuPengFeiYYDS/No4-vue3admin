@@ -1,42 +1,42 @@
-export const cardData = [
+export const tabs = [
   {
     title: '用户',
-    icon: '1',
+    icon: 'User',
     path: '/user/list'
   },
   {
     title: '商品',
-    icon: '2',
+    icon: 'ShoppingCart',
     path: '/goods/list'
   },
   {
     title: '订单',
-    icon: '3',
+    icon: 'Tickets',
     path: '/order/list'
   },
   {
     title: '评价',
-    icon: '4',
+    icon: 'ChatDotSquare',
     path: '/comment/list'
   },
   {
     title: '图库',
-    icon: '5',
+    icon: 'Picture',
     path: '/image/list'
   },
   {
     title: '公告',
-    icon: '6',
+    icon: 'Bell',
     path: '/notice/list'
   },
   {
     title: '配置',
-    icon: '7',
+    icon: 'SetUp',
     path: '/setting/base'
   },
   {
     title: '优惠券',
-    icon: '8',
+    icon: 'Files',
     path: '/coupon/list'
   }
 ]

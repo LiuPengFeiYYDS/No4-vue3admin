@@ -53,7 +53,6 @@ export default {
       commit('DEL_TAG', path)
     },
     handleCloseOther({ commit }, path) {
-      console.log(path)
       commit('HANDLE_CLOSE_OTHER', path)
     },
     handleCloseAll({ commit }) {

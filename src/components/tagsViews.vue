@@ -73,13 +73,11 @@ const tagsList = computed(() => {
 
 // 选中时事件
 function activeTabs(val) {
-  // console.log(val)
   router.push(val.props.name)
 }
 
 // 删除单个tag
 function removeTab(path) {
-  // console.log(path)
   store.dispatch('tags/delTag', path)
 }
 

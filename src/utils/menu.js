@@ -4,9 +4,7 @@
  */
 export default function filtersMenus(menus) {
   const menu = generateMenu(menus)
-  console.log('过滤器后=>', menu)
-  // const routes = handleGetRoutes(menu)
-  // console.log(routes)
+  // console.log('过滤器后=>', menu)
 
   return menu
 }

@@ -10,8 +10,8 @@ function statistics1() {
 function statistics2() {
   return request({ url: '/admin/statistics2', method: 'get' })
 }
-// // 退出登录
-// function logOut() {
-//   return request({ url: '/admin/logout', method: 'post' })
-// }
-export { statistics1, statistics2 }
+// // 图
+function statistics3(type) {
+  return request({ url: '/admin/statistics3?type=' + type, method: 'get' })
+}
+export { statistics1, statistics2, statistics3 }

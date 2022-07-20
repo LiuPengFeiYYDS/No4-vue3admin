@@ -24,7 +24,6 @@ const store = useStore()
 const menu = computed(() => {
   return store.getters.menuList
 })
-// console.log('888', menu)
 </script>
 
 <style lang="scss" scoped>
