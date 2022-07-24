@@ -19,20 +19,6 @@
         >
         </el-tab-pane>
       </el-tabs>
-
-      <!-- <el-dropdown @command="handleCommand">
-        <span class="el-dropdown-link">
-          <el-icon class="down">
-            <arrow-down />
-          </el-icon>
-        </span>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item command="other">关闭其他</el-dropdown-item>
-            <el-dropdown-item command="all">关闭所有</el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown> -->
       <el-dropdown @command="handleCommand">
         <span class="down">
           <el-icon class="el-icon--right"><arrow-down /></el-icon>
@@ -103,6 +89,7 @@ function handleCloseAll() {
   height: 55px;
   position: fixed;
   background-color: #f3f4f6;
+  z-index: 99;
 }
 .tags {
   display: flex;

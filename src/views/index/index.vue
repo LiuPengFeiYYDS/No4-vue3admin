@@ -150,7 +150,7 @@ const getChartData = async () => {
 }
 getChartData()
 const changeChartType = (type) => {
-  console.log('type', type)
+  // console.log('type', type)
   chartType.value = type
   getChartData()
 }

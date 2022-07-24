@@ -22,13 +22,6 @@ import Main from './Main/index.vue'
 import Header from './Header/index.vue'
 import Aside from './Aside/index.vue'
 import TagsView from '../components/tagsViews.vue'
-// import { ref, reactive, toRefs } from 'vue';
-// import { useStore } from 'vuex';
-//  import { useRouter, useRoute } from 'vue-router';
-// const store = useStore();
-// const router = useRouter();
-// const route = useRoute();
-// const data = reactive({});
 </script>
 
 <style lang="scss" scoped>
