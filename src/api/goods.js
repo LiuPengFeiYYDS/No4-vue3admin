@@ -1,19 +1,39 @@
-/**
- * 获取全部的数据
- */
 import request from '../utils/request'
 
-/**
- *获取列表数据
- */
-function goodsList(type) {
-  return request({ url: '/admin/goods/1?tab=' + type, method: 'get' })
+// 获取商品列表
+function getGoodsList(params, current) {
+  if (params.title && params.category_id) {
+    return request({
+      url: `/admin/goods/${current}?title=${params.title}&tab=${params.tab}&category_id=${params.category_id}`,
+      method: 'GET'
+    })
+  }
+  if (params.title) {
+    return request({
+      url: `/admin/goods/${current}?title=${params.title}&tab=${params.tab}`,
+      method: 'GET'
+    })
+  }
+  if (params.category_id) {
+    return request({
+      url: `/admin/goods/${current}?tab=${params.tab}&category_id=${params.category_id}`,
+      method: 'GET'
+    })
+  }
+  if (!params.title && !params.category_id) {
+    return request({
+      url: `/admin/goods/${current}?tab=${params.tab}`,
+      method: 'GET'
+    })
+  }
 }
-/**
- * 获取搜索的类型
- * @returns
- */
-function getCategoryt() {
-  return request({ url: '/admin/category', method: 'get' })
+
+// 获取商品分类下拉选项
+function getCategoriesList() {
+  return request({
+    url: '/admin/category',
+    method: 'GET'
+  })
 }
-export { goodsList, getCategoryt }
+
+export { getGoodsList, getCategoriesList }

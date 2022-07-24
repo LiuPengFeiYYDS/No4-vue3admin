@@ -1,213 +1,261 @@
 <template>
-  <div class="goods">
-    <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
-      <el-tab-pane label="全部" name="all"></el-tab-pane>
-      <el-tab-pane label="审核中" name="checking"></el-tab-pane>
-      <el-tab-pane label="出售中" name="saling"></el-tab-pane>
-      <el-tab-pane label="已下架" name="off"></el-tab-pane>
-      <el-tab-pane label="库存预警" name="min_stock"></el-tab-pane>
-      <el-tab-pane label="回收站" name="delete"></el-tab-pane>
+  <div class="">
+    <!--    tabs切换栏-->
+    <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleTabClick">
+      <el-tab-pane
+        v-for="(item, index) in tabList"
+        :key="index.name"
+        :label="item.label"
+        :name="item.name"
+      >
+      </el-tab-pane>
     </el-tabs>
-    <!-- input搜索新增等功能 -->
-    <Search :categ="categ" class="cearch">
-      <el-button type="primary" size="small" @click="drawer = true"
-        >新增</el-button
+    <!--主体-->
+    <el-card class="box-card">
+      <el-form
+        :inline="true"
+        :model="queryForm"
+        class="demo-form-inline"
+        ref="QueryFormRef"
       >
-      <el-button type="danger" size="small">批量删除</el-button>
-      <el-button size="small">上架</el-button>
-      <el-button size="small">下架</el-button>
-    </Search>
-    <!-- tab表格 -->
-    <el-table ref="multipleTableRef" :data="tableData" style="width: 100%">
-      <el-table-column type="selection" width="55" />
-      <el-table-column prop="cover" label="商品" width="240">
-        <template #default="scope">
-          <div class="cell">
-            <div>
-              <el-avatar shape="square" :size="50" :src="scope.row.cover" />
-            </div>
-            <div class="imgreoter">
-              <div>{{ scope.row.title }}</div>
-              <div>
-                <span style="color: red">{{ scope.row.min_price }}</span> |
-                <span>{{ scope.row.min_oprice }}</span>
-              </div>
-              <div v-if="scope.row.category">
-                分类：{{ scope.row.category.name }}
-              </div>
-              <div>创建时间：{{ scope.row.create_time }}</div>
-            </div>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="sale_count"
-        label="实际销量"
-        width="90"
-      />
-      <el-table-column align="center" prop="status" label="商品状态" width="90">
-        <template #default="scope">
-          <el-tag class="ml-2" v-if="scope.row.status === 0" type="danger"
-            >仓库</el-tag
+        <el-form-item label="关键词" prop="title">
+          <el-input
+            v-model="queryForm.title"
+            placeholder="商品名称"
+            clearable
+            @clear="handleClear"
+          />
+        </el-form-item>
+        <el-form-item label="商品分类" prop="category_id" v-show="showCategory">
+          <el-select
+            v-model="queryForm.category_id"
+            placeholder="请选择商品分类"
+            clearable
+            @clear="handleClear"
           >
-          <el-tag class="ml-2" v-if="scope.row.status === 1" type="success"
-            >上架</el-tag
+            <el-option
+              v-for="v in cateGoryList"
+              :key="v.category_id"
+              :label="v.name"
+              :value="v.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleSearchGoods">搜索</el-button>
+          <el-button @click="handleResetForm(QueryFormRef)">重置</el-button>
+          <el-button
+            v-show="!showCategory"
+            icon="ArrowUp"
+            text
+            type="primary"
+            @click="showCategory = !showCategory"
+            >展开</el-button
           >
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="ischeck"
-        label="审核状态"
-        width="90"
+          <el-button
+            v-show="showCategory"
+            icon="ArrowDown"
+            text
+            type="primary"
+            @click="showCategory = !showCategory"
+            >收起</el-button
+          >
+        </el-form-item>
+      </el-form>
+
+      <base-table
+        @handleCurrentChange="handleCurrentChange"
+        :tableColumn="tableColumn"
+        :tableData="goodsList"
+        :total="total"
+        :leftBtns="leftBtns"
+        stripe
+        checkbox
       >
-        <template #default="scope">
-          <div v-if="scope.row.ischeck === 1">通过</div>
-          <div v-if="scope.row.ischeck === 2">拒绝</div>
+        <template v-slot:btn>
+          <el-button
+            v-for="(v, i) in btnList"
+            :key="i"
+            type="primary"
+            link
+            size="small"
+            >{{ v.name }}</el-button
+          >
         </template>
-      </el-table-column>
-      <el-table-column align="center" prop="stock" label="总库存" width="80" />
-      <el-table-column align="center" label="操作" width="400">
-        <el-button
-          v-for="button in buttons"
-          :key="button.text"
-          size="small"
-          type="primary"
-          text
-          >修改</el-button
-        >
-        <el-button
-          v-for="button in buttons"
-          :key="button.text"
-          size="small"
-          type="primary"
-          text
-          >商品规格</el-button
-        >
-        <el-button
-          v-for="button in buttons"
-          :key="button.text"
-          size="small"
-          type="primary"
-          text
-          >设置轮播图</el-button
-        >
-        <el-button
-          v-for="button in buttons"
-          :key="button.text"
-          size="small"
-          type="primary"
-          text
-          >商品详情</el-button
-        >
-        <el-button
-          v-for="button in buttons"
-          :key="button.text"
-          size="small"
-          type="primary"
-          text
-          >删除</el-button
-        >
-      </el-table-column>
-    </el-table>
-    <!-- 抽屉 -->
-    <el-drawer
-      v-model="drawer"
-      size="70%"
-      title="I am the title"
-      :with-header="false"
-    >
-      <span>Hi there!</span>
-    </el-drawer>
+      </base-table>
+    </el-card>
   </div>
 </template>
 
 <script setup>
-import { getCategoryt, goodsList } from '../../api/goods'
-import Search from '../../components/goods/search.vue'
-import { ref } from 'vue'
-const buttons = [{ text: 'primary' }]
-// 默认首个pane
+import { reactive, ref } from 'vue'
+import BaseTable from '../../components/BaseTable'
+import { getCategoriesList, getGoodsList } from '@/api/goods'
+
+// 表格头部左边按钮
+const leftBtns = reactive([
+  { type: 'primary', name: '新增', method: 'add' },
+  { type: 'danger', name: '批量删除', method: 'delAll' },
+  { name: '上架', method: 'up' },
+  { name: '下架', method: 'down' }
+])
+
+const tabList = reactive([
+  {
+    label: '全部',
+    name: 'all'
+  },
+  {
+    label: '审核中',
+    name: 'checking'
+  },
+  {
+    label: '出售中',
+    name: 'saling'
+  },
+  {
+    label: '已下架',
+    name: 'off'
+  },
+  {
+    label: '库存预警',
+    name: 'min_stock'
+  },
+  {
+    label: '回收站',
+    name: 'delete'
+  }
+])
 const activeName = ref('all')
-/**
- * 关键词input
- */
-const categ = ref([])
-// tab表格
-const tableData = ref([])
-/**
- *抽屉的弹出和收缩
- */
-const drawer = ref(false)
-// const goodList = ref([])
-/**
- * 根据点击转换状态name
- */
-const handleClick = (tab) => {
-  const res = tab.props.name
-  activeName.value = res
-  getgood()
+
+const btnList = reactive([
+  { name: '修改' },
+  { name: '商品规格' },
+  { name: '设置轮播图' },
+  { name: '商品详情' },
+  { name: '删除' }
+])
+
+const tableColumn = reactive([
+  {
+    prop: 'cover',
+    label: '商品',
+    type: 'image',
+    width: '300px'
+  },
+  {
+    prop: 'sale_count',
+    label: '实际销量',
+    type: 'text'
+  },
+  {
+    prop: 'status',
+    label: '商品状态',
+    type: 'tag',
+    contCallBack: (val) => (val === 0 ? '仓库' : '上架'),
+    typeCallBack: (val) => (val === 0 ? 'danger' : 'success')
+  },
+  {
+    prop: 'ischeck',
+    label: '审核状态',
+    type: 'function',
+    callback(ischeck) {
+      switch (ischeck) {
+        case 1:
+          return '通过'
+        case 2:
+          return '拒绝'
+        default:
+          return '其他'
+      }
+    }
+  },
+  {
+    prop: 'stock',
+    label: '总库存',
+    type: 'text'
+  },
+  {
+    type: 'slot',
+    label: '操作',
+    slotName: 'btn',
+    width: '400px'
+  }
+])
+
+// 搜索框
+const queryForm = reactive({
+  title: '',
+  category_id: ''
+})
+
+// 搜索框删除重新请求
+function handleClear() {
+  handleGoodsList()
 }
-/**
- *获取商品所有列表
- */
-const getgood = async () => {
-  const res = await goodsList(activeName.value)
-  console.log('list', res)
-  // goodList.value = res
-  tableData.value = res.list
-  console.log(tableData.value)
+
+// 获取商品分类
+const cateGoryList = ref('')
+
+async function handleCategory() {
+  const res = await getCategoriesList()
+  // console.log(res)
+  cateGoryList.value = res
 }
-getgood()
-const getcateg = async () => {
-  const res = await getCategoryt()
-  categ.value = res
+
+handleCategory()
+
+// 获取商品列表
+const goodsList = ref()
+const cateList = ref()
+const total = ref()
+const current = ref(1)
+
+async function handleGoodsList() {
+  const res = await getGoodsList(
+    {
+      title: queryForm.title,
+      category_id: queryForm.category_id,
+      tab: activeName.value
+    },
+    current.value
+  )
+  console.log(res)
+  goodsList.value = res.list
+  cateList.value = res.cates
+  total.value = res.totalCount
 }
-getcateg()
+
+handleGoodsList()
+
+// 搜索商品
+function handleSearchGoods() {
+  current.value = 1
+  handleGoodsList()
+}
+
+// 换页
+function handleCurrentChange(val) {
+  current.value = val
+  handleGoodsList()
+}
+
+// tab栏切换
+function handleTabClick(TabsPaneContext) {
+  console.log(TabsPaneContext.props.name)
+}
+
+// 重置表单
+const QueryFormRef = ref('')
+function handleResetForm() {
+  QueryFormRef.value.resetFields()
+}
+
+const showCategory = ref(false)
 </script>
 
 <style lang="scss" scoped>
-.top {
+.box-card {
   width: 100%;
-  background-color: #fff;
-  .inputs {
-    height: 30px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    .left {
-      width: 800px;
-      display: flex;
-      align-items: center;
-      margin-left: 50px;
-
-      .el-input {
-        width: 300px;
-        margin: 0px 20px;
-        height: 30px;
-      }
-      span {
-        font-size: 12px;
-      }
-    }
-  }
-}
-.cell {
-  display: flex;
-  align-items: center;
-  .imgreoter {
-    margin-left: 10px;
-    div {
-      font-size: 10px;
-    }
-  }
-}
-.cearch {
-  height: 90px;
-  background-color: #fff;
-  padding-top: 20px;
-  padding-left: 40px;
 }
 </style>
